@@ -1,0 +1,53 @@
+{% extends "account/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+{% if user.is_authenticated %}
+
+<div class="row p-2 bg-white" style="min-height:100vh;">
+  <div class="col-md-8 col-12 ">
+    
+    <div class="card">
+  <div class="card-header text-center h5 text-success">Search Results</div>
+  <div class="card-body">
+   {% if count_result < 1 %}
+         <div class="alert alert-danger" role="alert">
+            No results!
+        </div>
+    {% else %}
+        {%  for result in results %}
+        <li class="list-group-item"> {{ result.name }} </li>
+        {% endfor %}
+    {% endif %}
+  </div> <!-- closing the card body -->
+  </div> <!-- closing the card  -->
+
+ 
+  </div> <!-- closing the first col  -->
+
+  <div class="col-md-4 col-12 ">
+     <h6 class="mt-2">Related Links</h6>
+           <ul class="list-group">
+           {% if user.is_neighborhood_admin is True %}
+           <a type="button" class="btn btn-outline-secondary mt-3" href="{% url 'add-health-center' %}">Add Health Center</a>
+           <a type="button" class="btn btn-outline-secondary mt-3" href="{% url 'add-policestation' %}">Add Police Station</a>
+           <a type="button" class="btn btn-outline-secondary mt-3" href="{% url 'add-business' %}">Add Business</a>
+           {% endif %}
+           <a type="button" class="btn btn-outline-secondary mt-3" href="{% url 'blog' %}">Blog</a>
+           <a type="button" class="btn btn-outline-secondary mt-3" href="{% url 'profile' %}">Logged in as {{ user.username }}</a>
+           <a type="button" class="btn btn-outline-secondary mt-3" href="{% url 'logout' %}">Logout</a>
+
+            
+            </ul>
+  </div>
+
+</div><!-- closing the row --> 
+{% else %}
+  <div class="alert alert-warning" role="alert">
+    <a href="{% url 'login' %}">Login</a> to view this page!
+</div>
+{% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends "account/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+ {% if user.is_authenticated %}
+    <div class="alert alert-warning" role="alert">
+        <a href="{% url 'logout' %}">Logout</a> first to register!
+    </div>
+ {% else %}
+<div id="LogRegContainer" style="background:red; margin:auto;" >
+<div class="card mt-3" >
+  <div class="card-body">
+    <h5 class="card-title text-center m-2">Register</h5>
+    <form action="register" method="post" autocomplete="on">
+     {% for message in messages %}
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                <div class="alert alert-success" >{{ message }}</div>
+        {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <div class="alert alert-danger" >{{ message }}</div>
+        {% endif %}
+        {% endfor %}
+        {% csrf_token %}
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Name</label>
+          <div class="col-sm-8">
+          <input type="text" name="name" class="form-control" required>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Email</label>
+          <div class="col-sm-8">
+          <input type="email" name="email" class="form-control" required>
+          </div>
+        </div> 
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Username</label>
+          <div class="col-sm-8">
+          <input type="text" name="username" class="form-control" required>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Location</label>
+          <div class="col-sm-8">
+          <input type="text" name="location" class="form-control" value="Ongata Rongai" readonly required>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Neighborhood name</label>
+        <div class="col-sm-8">
+          <select class="form-control" name="neighborhood" aria-label="Default select example">
+            <option selected name="neighborhood">Select neighborhood</option>
+              {%  for neighborhood in neighborhoods %}
+                <option value="{{ neighborhood.id }}">{{ neighborhood.name }}</option>
+              {% endfor %}  
+          </select> 
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Password</label>
+          <div class="col-sm-8">
+          <input type="password" name="password" class="form-control" min='4' required>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Confirm Password</label>
+          <div class="col-sm-8">
+          <input type="password" name="confirm_password" class="form-control" min='4' required>
+          </div>
+        </div>         
+        <div class='row'>
+        <div class='col-md-8'>
+        <button type="submit"  class="btn btn-success btn-block"><i class="fa fa-database"></i> Register </button>
+        </div>
+        <div class='col-md-4'>
+        <a type="button" class="btn btn-outline-info btn-block " href="verifyemail"><i class="fa fa-stream"></i> Verify Email</a>
+        </div>
+        </div>
+    </form>  </div>
+</div>
+    
+  
+</div>
+ {% endif %}
+{% endblock %}
